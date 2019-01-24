@@ -8,6 +8,14 @@ window.onload = function () {
     var losses = 0;
     var tries = 9;
     var guessed = [];
+    var divTag = document.getElementById("game");
+    var scoreCard = function (divTag, wins, losses, tries, guessed) {
+        divTag.innerHTML =
+            "<p>Wins: " + wins + "</p>" +
+            "<p>Losses: " + losses + "</p>" +
+            "<p>Tries remaining: " + tries + "</p>" +
+            "<p>Letter already guessed: " + guessed.join() + "</p>";
+    };
 
     //select a letter
     selectedLetter = letters[Math.floor(Math.random() * letters.length)];
@@ -18,26 +26,29 @@ window.onload = function () {
     document.onkeyup = function (event) {
         userGuess = event.key;
         console.log(userGuess);
-
-        if (userGuess === selectedLetter) {
-            wins++;
-            tries = 9;
-            selectedLetter = letters[Math.floor(Math.random() * letters.length)];
-        }
-        else {
-            guessed.push(userGuess)
-            tries--;
-        };
-        if (tries === 0) {
-            losses++;
-            tries = 9;
-            selectedLetter = letters[Math.floor(Math.random() * letters.length)];
-        };
     };
-    var divTag = document.getElementById("game");
-    divTag.innerHTML =
-        "<p>Wins: " + wins + "</p>" +
-        "<p>Losses: " + losses + "</p>" +
-        "<p>Tries remaining: " + tries + "</p>" +
-        "<p>Letter already guessed: " + guessed.join() + "</p>";
+
+    if (userGuess === selectedLetter) {
+        wins++;
+        tries = 9;
+        selectedLetter = letters[Math.floor(Math.random() * letters.length)];
+        scoreCard;
+        console.log(selectedLetter);
+
+    }
+    else {
+        guessed.push(userGuess)
+        tries--;
+        scoreCard;
+        console.log(tries);
+    };
+    if (tries === 0) {
+        losses++;
+        tries = 9;
+        selectedLetter = letters[Math.floor(Math.random() * letters.length)];
+        scoreCard;
+        console.log(losses);
+    };
+
+    scoreCard;
 };
