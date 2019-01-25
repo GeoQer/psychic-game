@@ -9,46 +9,57 @@ window.onload = function () {
     var tries = 9;
     var guessed = [];
     var divTag = document.getElementById("game");
-    var scoreCard = function (divTag, wins, losses, tries, guessed) {
+    var scoreCard = function () {
         divTag.innerHTML =
-            "<p>Wins: " + wins + "</p>" +
-            "<p>Losses: " + losses + "</p>" +
-            "<p>Tries remaining: " + tries + "</p>" +
-            "<p>Letter already guessed: " + guessed.join() + "</p>";
+            '<p>Wins: <span id="wins">' + wins + '</span></p>' +
+            '<p>Losses: <span id="losses">' + losses + '</span></p>' +
+            '<p>Tries remaining: <span id="tries">' + tries + '</span></p>' +
+            '<p>Letter already guessed: <span id="guessed">' + guessed.join(", ") + '</span></p>';
+    };
+
+    var scoreUpdate = function () {
+        document.querySelector("#wins").innerHTML = wins;
+        document.querySelector("#losses").innerHTML = losses;
+        document.querySelector("#tries").innerHTML = tries;
+        document.querySelector("#guessed").innerHTML = guessed.join(", ");
     };
 
     //select a letter
     selectedLetter = letters[Math.floor(Math.random() * letters.length)];
     console.log(selectedLetter);
 
+    scoreCard();
+
     //look for user input
 
     document.onkeyup = function (event) {
         userGuess = event.key;
         console.log(userGuess);
+
+        if (userGuess === selectedLetter) {
+            wins++;
+            tries = 9;
+            guessed = [];
+            selectedLetter = letters[Math.floor(Math.random() * letters.length)];
+            scoreCard();
+            console.log(selectedLetter);
+
+        }
+        else {
+            guessed.push(userGuess)
+            tries--;
+            scoreCard();
+            console.log(tries);
+        };
+        if (tries === 0) {
+            losses++;
+            tries = 9;
+            guessed = [];
+            selectedLetter = letters[Math.floor(Math.random() * letters.length)];
+            scoreCard();
+            console.log(losses);
+        };
     };
 
-    if (userGuess === selectedLetter) {
-        wins++;
-        tries = 9;
-        selectedLetter = letters[Math.floor(Math.random() * letters.length)];
-        scoreCard;
-        console.log(selectedLetter);
-
-    }
-    else {
-        guessed.push(userGuess)
-        tries--;
-        scoreCard;
-        console.log(tries);
-    };
-    if (tries === 0) {
-        losses++;
-        tries = 9;
-        selectedLetter = letters[Math.floor(Math.random() * letters.length)];
-        scoreCard;
-        console.log(losses);
-    };
-
-    scoreCard;
+    scoreCard();
 };
